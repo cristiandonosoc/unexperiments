@@ -12,15 +12,12 @@ function planetState:enter(oldstate, planetIndex, biomass)
 
   _constants.zoom = oldstate.camera.scale
   _constants.posDiff = oldstate.blob.pos - self.planet.pos
-  print(oldstate.blob.pos:unpack())
-  print(self.planet.pos:unpack())
 
   Timer.tween(1.5, _constants, {zoom = self.camera.scale}, "in-out-quad")
   Timer.tween(1, _constants, {posDiff = Vector.zero()}, "in-out-quad")
 end
 
 function planetState:update(dt)
-  --print(_constants.posDiff:unpack())
   self.camera:lookAt((_planets[self.index].pos + _constants.posDiff):unpack())
   self.camera:zoomTo(_constants.zoom)
 end
