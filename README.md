@@ -14,8 +14,8 @@ Here is a brief description of each game developed so far, plus some
 statistics. See each prototype source or the project homepage for more
 information.
 
-01 - Ecosystem
---------------
+01) Ecosystem - The Blob
+------------------------
 
 The idea was to be an alien "blob" that had to conquer each planet in a solar
 system before he ran out of biomass. Each planet had a different ecosystem,
@@ -26,3 +26,16 @@ Developed in Löve 2D (Lua engine). First time developing in this
 language/engine.
 Implementation time: 27 hours (~2.5 days of work)
 Total iteration time: 50 hours (~5 days of work)
+
+02) Imaginary - Bob
+-------------------
+
+The idea was to show an office worker in his un-motivating office,
+where every aspect of it was depressing and made him feel bad. After this, we
+would see him retreat into his imaginary world, where he would live his
+passions, as a way of escapism. You explore this reality as a point n' click
+game. Sadly, due to time restraints, only part of the office was implemented. 
+
+Developed in Construct 2.
+Implementation time: 6 days of work
+Total iteration time: 7 days of work
