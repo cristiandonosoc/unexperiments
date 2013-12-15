@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="25" height="50" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="cave_tile" tilewidth="32" tileheight="32">
+  <image source="../images/cave_tile.png" width="160" height="128"/>
+ </tileset>
+ <tileset firstgid="21" name="beach_tile" tilewidth="32" tileheight="32">
+  <image source="../images/beach_tile.png" trans="ffffff" width="256" height="512"/>
+ </tileset>
+ <layer name="field" width="25" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztlksOACEIQ7mBt/bcszeGn8Wo00V3lRdCiXQR6YaaIuttpFZUGgPRR4aB9JDxL4Y321mPJ/erHjJinuqZv7QfZGAZnlydzvD+5VnGrH52z8i4Y+a7sruLgfCQcQ6j+mZA3DWWh4yYp3rmL+0HGfcwZrnP5lOrFZXV62ofoz5IjeYW
+  </data>
+ </layer>
+</map>
