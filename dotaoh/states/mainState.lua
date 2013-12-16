@@ -30,8 +30,10 @@ end
 
 function mainState:draw()
   _camera:attach()
-  _map:draw()
-  drawGrid()
+  --_map:draw()
+  --drawGrid()
+
+  _gameEngine:draw()
   _camera:detach()
 end
 

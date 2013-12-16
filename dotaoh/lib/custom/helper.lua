@@ -3,3 +3,9 @@ function table.length(t)
   for i in pairs(t) do count = count + 1 end
   return count
 end
+
+function table.removeByKey(t, k)
+  local element = t[k]
+  t[k] = nil
+  return element
+end

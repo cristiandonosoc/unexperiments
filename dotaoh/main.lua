@@ -9,6 +9,7 @@ ATL = {}
 ATL.Loader = require "lib.advanced_tile_loader.Loader"
 ATL.Loader.path = "maps/"
 Grid = require "lib.advanced_tile_loader.Grid"
+require "lib.require.require"
 
 -- EXTENSIONS
 require "lib.custom.Grid"
@@ -18,32 +19,45 @@ require "input"
 
 -- CUSTOM CLASSES
 Gamegrid = require "lib.custom.Gamegrid"
-require "classes.gameEngine"
-require "classes.field"
-require "classes.minion"
+require.tree "classes"
 
 -- HELPERS
 require "lib.custom.helper"
 
-_mainState = require("states/mainState")
+_sprites = {}
+_states = {}
+
+local function loadSprites()
+  _sprites.field = love.graphics.newImage("images/field.jpg")
+  _sprites.warrior = love.graphics.newImage("images/warrior.png")
+end
+
+local function loadStates()
+  _states.main = require("states/mainState")
+end
 
 function love.load()
-  _camera = Camera(0,0,1,0)
+  loadStates()
+  loadSprites()
+
+  _camera = Camera(100,400,1,0)
 
   Gamestate.registerEvents()
-  Gamestate.switch(_mainState)
+  Gamestate.switch(_states.main)
 
-  gameEngine = GameEngine()
-  gameEngine:testMinions()
+  _gameEngine = GameEngine()
+  _gameEngine:testMinions()
 end
 
 function love.update(dt)
   Timer.update(dt)
   Gamestate.updateInput(dt)
 
-  gameEngine:print()
+  --[[
+  _gameEngine:print()
   io.read()
-  gameEngine:battle()
+  _gameEngine:battle()
+  ]]--
 end
 
 function love.draw()
