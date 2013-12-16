@@ -19,6 +19,18 @@ Lane = Class{
   end
 }
 
+function Lane:fieldFunction(funcName)
+  for i, field in pairs(self.fields) do
+    field:fieldFunction(funcName)
+  end
+end
+
+function Lane:update(dt)
+  for i, field in pairs(self.fields) do
+    field:update(dt)
+  end
+end
+
 function Lane:draw()
   for i, field in pairs(self.fields) do
     field:draw()

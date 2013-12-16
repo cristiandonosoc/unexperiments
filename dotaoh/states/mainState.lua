@@ -46,6 +46,14 @@ function drawGrid()
   end
 end
 
+function mainState:keyreleased(key)
+  if key == " " then
+    _gameEngine:fieldFunction("battle")
+    _gameEngine:fieldFunction("postBattle")
+  end
+
+end
+
 return mainState
 
 

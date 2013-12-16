@@ -10,7 +10,7 @@ Field = Class{
 
     self.parties[_northId] = northParty
     self.parties[_southId] = southParty
-
+    for i, party in pairs(self.parties) do self.renderer:addPartyRenderer(party.renderer) end
     self.northField = northField
     self.southField = southField
 
@@ -37,6 +37,22 @@ function Field:setName(name)
   return self
 end
 
+function Field:addMinion(minion, partyId)
+  local party = self.parties[partyId]
+  party:addMinion(minion)
+end
+
+-- ALL THE MINIONS IN THE FIELD RECEIVE DAMAGE
+function Field:receiveAttack(damage)
+  for i, party in pairs(self.parties) do
+    party:receiveDamage(damage)
+  end
+end
+
+function Field:fieldFunction(funcName)
+  self[funcName](self)
+end
+
 function Field:battle()
   -- NORTH ATTACKS
   for i, minion in pairs(self.parties[_northId].minions) do
@@ -61,28 +77,13 @@ function Field:postBattle()
   end
 end
 
-function Field:addMinion(minion, partyId)
-  local party = self.parties[partyId]
-  party:addMinion(minion)
-end
-
--- ALL THE MINIONS IN THE FIELD RECEIVE DAMAGE
-function Field:receiveAttack(damage)
+function Field:update(dt)
+  self.renderer:update(dt)
   for i, party in pairs(self.parties) do
-    party:receiveDamage(damage)
+    party:update(dt)
   end
 end
 
-function Field:print()
-  print("PARTY NORTE:")
-  for i, minion in pairs(self.parties[_northId].minions) do
-    minion:print()
-  end
-  print("PARTY SUR:")
-  for i, minion in pairs(self.parties[_southId].minions) do
-    minion:print()
-  end
-end
 
 function Field:draw()
   self.renderer:draw()
@@ -113,9 +114,13 @@ end
 function FieldRenderer:setPos(pos)
   self.pos = pos
   for i, partyRenderer in pairs(self.partyRenderers) do
-    partyRenderer.setPos(pos)
+    partyRenderer:setPos(pos)
   end
   return self
+end
+
+function FieldRenderer:update(dt)
+  -- EMPTY BLOCK
 end
 
 function FieldRenderer:draw()

@@ -25,6 +25,12 @@ function Party:receiveAttack(damage)
   end
 end
 
+function Party:update(dt)
+  for i, minion in pairs(self.minions) do
+    minion:update(dt)
+  end
+end
+
 function Party:draw()
   for i, minion in pairs(self.minions) do
     minion:draw()
@@ -39,7 +45,9 @@ PartyRenderer = Class{
   init = function(self, pos, isSouth)
     self.pos = pos
     self.offset = PartyRenderer.offsetSize
-    if isSouth then self.offset = (FieldRenderer.height - PartyRenderer.offsetSize) end
+    if isSouth then 
+      self.offset = (FieldRenderer.height - MinionRenderer.height - PartyRenderer.offsetSize) 
+    end
   end
 }
 
@@ -52,9 +60,11 @@ function PartyRenderer:setPos(pos)
 end
 
 function PartyRenderer:getMinionPos(count)
-  return Vector(
-    count*(PartyRenderer.offsetSize + MinionRenderer.width),
-    self.pos + self.offset)
+  local offset = PartyRenderer.offsetSize
+  local pos = Vector(
+    offset + (count - 1)*(PartyRenderer.offsetSize + MinionRenderer.width),
+    self.pos.y + self.offset)
+  return pos
 end
 
 function PartyRenderer:draw()

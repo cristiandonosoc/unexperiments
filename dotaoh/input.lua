@@ -9,6 +9,10 @@ function love.keypressed(key)
 		love.event.quit()
 	end
 
+  if key == "p" then
+    debug.debug()
+  end
+
 end
 
 function love.mousereleased(x, y, button)

@@ -10,6 +10,8 @@ ATL.Loader = require "lib.advanced_tile_loader.Loader"
 ATL.Loader.path = "maps/"
 Grid = require "lib.advanced_tile_loader.Grid"
 require "lib.require.require"
+require "lib.vardump"
+Anim8 = require "lib.anim8"
 
 -- EXTENSIONS
 require "lib.custom.Grid"
@@ -25,11 +27,21 @@ require.tree "classes"
 require "lib.custom.helper"
 
 _sprites = {}
+_spriteSheets = {}
 _states = {}
 
 local function loadSprites()
+  -- SPRITES
   _sprites.field = love.graphics.newImage("images/field.jpg")
   _sprites.warrior = love.graphics.newImage("images/warrior.png")
+  _sprites.yellow_circle = love.graphics.newImage("images/yellow_circle.png")
+  -- SPRITESHEETS
+  local ibh = love.graphics.newImage("images/spritesheets/ice_blaster_hit.png")
+  _spriteSheets.ice_blast = {
+    image = ibh,
+    grid = Anim8.newGrid(200, 200, ibh:getWidth(), ibh:getHeight())
+  }
+
 end
 
 local function loadStates()
@@ -40,7 +52,7 @@ function love.load()
   loadStates()
   loadSprites()
 
-  _camera = Camera(100,400,1,0)
+  _camera = Camera(100,400,2,0)
 
   Gamestate.registerEvents()
   Gamestate.switch(_states.main)
@@ -52,9 +64,9 @@ end
 function love.update(dt)
   Timer.update(dt)
   Gamestate.updateInput(dt)
+  _gameEngine:update(dt)
 
   --[[
-  _gameEngine:print()
   io.read()
   _gameEngine:battle()
   ]]--

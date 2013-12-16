@@ -18,20 +18,17 @@ GameEngine = Class{
 
 function GameEngine:testMinions()
 
-  self.lane.fields[2]:addMinion(Minion(2, 4, "NORTEÑO"), _northId)
-  self.lane.fields[2]:addMinion(Minion(1, 7, "SUREÑO"), _southId)
+  self.lane.fields[2]:addMinion(Minion(4, 2, "NORTEÑO"), _northId)
+  self.lane.fields[2]:addMinion(Minion(4, 2, "NORTEÑO"), _northId)
+  self.lane.fields[2]:addMinion(Minion(7, 3, "SUREÑO"), _southId)
 end
 
-function GameEngine:print()
-  print("--------------------------------")
-  print("*** STATUS ***")
-  self.field:print()
+function GameEngine:fieldFunction(funcName)
+  self.lane:fieldFunction(funcName)
 end
 
-function GameEngine:battle()
-  print("*** FASE DE ATAQUE ***")
-  self.field:battle()
-  self.field:postBattle()
+function GameEngine:update(dt)
+  self.lane:update(dt)
 end
 
 function GameEngine:draw()
