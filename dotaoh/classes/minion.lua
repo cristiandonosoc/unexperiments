@@ -51,6 +51,16 @@ function Minion:checkLife()
   end
 end
 
+function Minion:gameFunction(funcName, attr)
+  if self[funcName] then
+    self[funcName](self, attr)
+  end
+end
+
+function Minion:beginTurn()
+  self.moved = false
+end
+
 function Minion:update(dt)
   self.renderer:update(dt)
 end

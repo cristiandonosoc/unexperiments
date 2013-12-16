@@ -12,6 +12,7 @@ Grid = require "lib.advanced_tile_loader.Grid"
 require "lib.require.require"
 require "lib.vardump"
 Anim8 = require "lib.anim8"
+require "lib.Beetle"
 
 -- EXTENSIONS
 require "lib.custom.Grid"
@@ -51,14 +52,20 @@ end
 function love.load()
   loadStates()
   loadSprites()
+  
+  beetle.load()
+  beetle.add("player", _northId)
+  beetle.setKey("m")
 
-  _camera = Camera(100,400,2,0)
+  _camera = Camera(100,400,1.3,0)
 
   Gamestate.registerEvents()
   Gamestate.switch(_states.main)
 
   _gameEngine = GameEngine()
+  _gameEngine.current_player = _northId
   _gameEngine:testMinions()
+  _gameEngine:gameFunction("print")
 end
 
 function love.update(dt)
@@ -66,12 +73,8 @@ function love.update(dt)
   Gamestate.updateInput(dt)
   _gameEngine:update(dt)
 
-  --[[
-  io.read()
-  _gameEngine:battle()
-  ]]--
 end
 
 function love.draw()
-
+  beetle.draw()
 end

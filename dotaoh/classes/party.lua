@@ -1,7 +1,7 @@
 Party = Class{
   init = function(self, field, isSouth)
     self.minions = {}
-    self.count = 0 
+    self.count = 0
     self.field = field
     self.renderer = PartyRenderer(field.renderer.pos, isSouth)
   end
@@ -22,6 +22,15 @@ end
 function Party:receiveAttack(damage)
   for i, minion in pairs(self.minions) do
     minion:receiveAttack(damage)
+  end
+end
+
+function Party:gameFunction(funcName, attr)
+  if self[funcName] then
+    self[funcName](self, attr)
+  end
+  for i, minion in pairs(self.minions) do
+    minion:gameFunction(funcName, attr)
   end
 end
 

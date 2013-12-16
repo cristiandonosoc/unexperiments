@@ -5,6 +5,7 @@ donde se esté.
 --]]
 
 function love.keypressed(key)
+  beetle.key(key)
 	if key == "escape" then
 		love.event.quit()
 	end

@@ -19,9 +19,12 @@ Lane = Class{
   end
 }
 
-function Lane:fieldFunction(funcName)
+function Lane:gameFunction(funcName, attr)
+  if self[funcName] then
+    self[funcName](self, attr)
+  end
   for i, field in pairs(self.fields) do
-    field:fieldFunction(funcName)
+    field:gameFunction(funcName, attr)
   end
 end
 

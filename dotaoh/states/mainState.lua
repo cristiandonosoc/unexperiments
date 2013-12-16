@@ -6,10 +6,6 @@ local moveSpeed = 500
 local drawGrid
 
 function mainState:init()
-  _map = ATL.Loader.load("dotaoh.tmx")
-  _map:setDrawRange(0,0,_map.width*_map.tileWidth, _map.height*_map.tileHeight)
-  
-  _gameGrid = Gamegrid(_map("field"))
 end
 
 function mainState:enter(oldState)
@@ -30,9 +26,6 @@ end
 
 function mainState:draw()
   _camera:attach()
-  --_map:draw()
-  --drawGrid()
-
   _gameEngine:draw()
   _camera:detach()
 end
@@ -48,8 +41,13 @@ end
 
 function mainState:keyreleased(key)
   if key == " " then
-    _gameEngine:fieldFunction("battle")
-    _gameEngine:fieldFunction("postBattle")
+    _gameEngine:gameFunction("beginTurn")
+    _gameEngine:gameFunction("move", _gameEngine.current_player)
+    _gameEngine:gameFunction("battle")
+    _gameEngine:gameFunction("postBattle")
+    _gameEngine:gameFunction("endTurn")
+    _gameEngine:changeCurrentPlayer()
+    _gameEngine:gameFunction("print")
   end
 
 end

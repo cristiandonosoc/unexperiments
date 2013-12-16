@@ -14,6 +14,9 @@ Field = Class{
     self.northField = northField
     self.southField = southField
 
+    self.nextFields = {}
+    self.nextFields[_northId] = northField
+    self.nextFields[_southId] = southField
   end
 }
 
@@ -23,12 +26,12 @@ function Field:addPlayer(player, partyId)
 end
 
 function Field:setNorthField(field)
-  self.northField = field
+  self.nextFields[_northId] = field
   return self
 end
 
 function Field:setSouthField(field)
-  self.southField = field
+  self.nextFields[_southId] = field
   return self
 end
 
@@ -49,8 +52,26 @@ function Field:receiveAttack(damage)
   end
 end
 
-function Field:fieldFunction(funcName)
-  self[funcName](self)
+function Field:gameFunction(funcName, attr)
+  if self[funcName] then
+    self[funcName](self, attr)
+  end
+  for i, party in pairs(self.parties) do
+    party:gameFunction(funcName, attr)
+  end
+end
+
+function Field:move(partyId)
+  local party = self.parties[partyId]
+  for i, minion in pairs(party.minions) do
+    if not minion.moved then
+      local nextField = self.nextFields[getOppositeSide(partyId)]
+      nextField:addMinion(minion, partyId)
+      print("MOVING "..minion.name.." FROM "..self.name.." TO "..nextField.name)
+      party:removeMinion(minion)
+      minion.moved = true
+    end
+  end
 end
 
 function Field:battle()
@@ -90,6 +111,10 @@ function Field:draw()
   for i, party in pairs(self.parties) do
     party:draw()
   end
+end
+
+function Field:print()
+  print(self.name .. " N: " .. table.length(self.parties[_northId].minions) .. " S: " .. table.length(self.parties[_southId].minions))
 end
 
 -----------------------------------------------------------------------
