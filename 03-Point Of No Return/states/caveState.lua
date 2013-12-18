@@ -21,28 +21,28 @@ function caveState:init()
 
   -- We iterate over the tiles
   for x, y, tile in _map("cave"):iterate() do
-    if tile.properties.name then
-      _tiles[tile.properties.name] = tile
+    local name = tile.properties.name
+    _tiles[name] = tile
+
+    if name == "floor" then
+      for _x, _y, cell in _gameGrid:rectangle(x-1,y-1,2,2) do
+        cell.viewable = true
+        if cell.properties.name ~= "floor" then
+          cell.wall = true
+        end
+      end
     end
 
-    if tile.properties.name == "entrance" then
-      table.insert(_entrances, {
-        x = x,
-        y = y,
-        tile = tile
-      })
+    if name == "start" then
+      _player = Player()
+      _player:setPosByGrid(x, y)
     end
   end
-
-  _player = Player()
 
 end
 
 function caveState:enter(oldState)
 
-
-
-  addDwarf(1)
 end
 
 function caveState:update(dt)
@@ -66,14 +66,6 @@ function caveState:update(dt)
 
 end
 
-function addDwarf()
-  index = math.random(1, table.getn(_entrances))
-  table.insert(_miners, Miner(
-    Vector.new(_entrances[index].x, _entrances[index].y), _gameGrid)
-  )
-  Timer.add(_minerSpawn, addDwarf)
-end
-
 function caveState:updateInput(dt)
   _cameraTransform.x, _cameraTransform.y = 0, 0 
   if love.keyboard.isDown("up") then _cameraTransform.y = _cameraTransform.y - moveSpeed*dt end
@@ -89,9 +81,9 @@ function caveState:draw()
   _map:draw()
   for i, miner in pairs(_miners) do miner:draw() end
   _player:draw()
-  drawGrid()
+  --drawGrid()
   _camera:detach()
-  printData()
+  --printData()
   _player:print()
 end
 

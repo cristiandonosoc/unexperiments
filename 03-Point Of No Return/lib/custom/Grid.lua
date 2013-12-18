@@ -32,7 +32,7 @@ function Grid:neighbours(x, y, includeNil)
 end
 
 -- RETURNS THE FIRST NOT FOUND FUCKER
-function Grid:internalBFS(x, y, r, includeNil, viewed, dir)
+function Grid:internalBFS(x, y, r, includeNil, viewed, block_property)
   -- We see if this node has been entered
   if not viewed[x] then -- The row has not been accesed
     viewed[x] = {}
@@ -57,31 +57,39 @@ function Grid:internalBFS(x, y, r, includeNil, viewed, dir)
 
     local _x = x - 1
     local _y = y
-    X, Y, TILE = self:internalBFS(_x, _y, newR, includeNil, viewed)
-    if X then return X, Y, TILE end
+    if not block_property or self(x, y)[block_property] then
+      X, Y, TILE = self:internalBFS(_x, _y, newR, includeNil, viewed)
+      if X then return X, Y, TILE end
+    end
 
     _x = x
     _y = y + 1
-    X, Y, TILE = self:internalBFS(_x, _y, newR, includeNil, viewed)
-    if X then return X, Y, TILE end
+    if not block_property or self(x, y)[block_property] then
+      X, Y, TILE = self:internalBFS(_x, _y, newR, includeNil, viewed)
+      if X then return X, Y, TILE end
+    end
 
     _x = x + 1
     _y = y
-    X, Y, TILE = self:internalBFS(_x, _y, newR, includeNil, viewed)
-    if X then return X, Y, TILE end
+    if not block_property or self(x, y)[block_property] then
+      X, Y, TILE = self:internalBFS(_x, _y, newR, includeNil, viewed)
+      if X then return X, Y, TILE end
+    end
 
     _x = x
     _y = y - 1
-    local X, Y, TILE = self:internalBFS(_x, _y, newR, includeNil, viewed)
-    if X then return X, Y, TILE end
+    if not block_property or self(x, y)[block_property] then
+      X, Y, TILE = self:internalBFS(_x, _y, newR, includeNil, viewed)
+      if X then return X, Y, TILE end
+    end
   end
   return nil
 end
 
-function Grid:bfs(x, y, r, includeNil)
+function Grid:bfs(x, y, r, includeNil, block_property)
   local viewed = {}
   local function bfsFunction()
-    local X, Y, TILE = self:internalBFS(x, y, r, includeNil, viewed)
+    local X, Y, TILE = self:internalBFS(x, y, r, includeNil, viewed, block_property)
     if X then return X, Y, TILE end
     return nil
   end

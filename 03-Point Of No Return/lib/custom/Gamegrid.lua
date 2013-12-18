@@ -23,8 +23,7 @@ function Gamegrid:new(tileLayer, tileWidth, tileHeight)
     end
     data.tile = tile
     data.visible = false
-    grid.cells[x] = grid.cells[x] or {}
-    grid.cells[x][y] = data
+    data.viewable = false
 
     local _x = x*tileWidth
     local _y = y*tileHeight
@@ -34,8 +33,12 @@ function Gamegrid:new(tileLayer, tileWidth, tileHeight)
       _x + tileWidth, _y + tileHeight,
       _x, _y + tileHeight)
     rectangle.position = Vector(x, y)
+    rectangle.tile = data
     grid.collider:addShape(rectangle)
     grid.collider:setPassive(rectangle)
+
+    grid.cells[x] = grid.cells[x] or {}
+    grid.cells[x][y] = data
 
   end
   return grid
