@@ -5,13 +5,17 @@ Timer = require "lib.hump.timer"
 Class = require "lib.hump.class"
 Gamestate = require "lib.hump.gamestate"
 Shapes = require "lib.hardon_collider.shapes"
+SpatialHash = require "lib.hardon_collider.spatialhash"
+Collider = require "lib.hardon_collider"
 ATL = {}
 ATL.Loader = require "lib.advanced_tile_loader.Loader"
 ATL.Loader.path = "maps/"
 Grid = require "lib.advanced_tile_loader.Grid"
+require "lib.vardump"
 
 -- EXTENSIONS
 require "lib.custom.Grid"
+require "lib.custom.helper"
 
 -- WE LOAD THE GAME STATES
 townState = require("states/townState")
@@ -22,6 +26,7 @@ require "input"
 
 -- CUSTOM CLASSES
 require "classes.miner"
+require "classes.player"
 Gamegrid = require "lib.custom.Gamegrid"
 
 
@@ -40,6 +45,7 @@ end
 function love.update(dt)
   Timer.update(dt)
   Gamestate.updateInput(dt)
+
 end
 
 function love.draw()

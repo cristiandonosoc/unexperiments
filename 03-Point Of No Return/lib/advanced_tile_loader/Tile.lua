@@ -24,6 +24,7 @@ end
 
 -- Draws the tile at the given location 
 function Tile:draw(x, y, rotation, scaleX, scaleY, offsetX, offsetY)
+    print("original")
     love.graphics.drawq(self.tileset.image, self.quad, self.tileset.offsetX + x, 
                         self.tileset.offsetY + y, rotation, scaleX, scaleY, offsetX, offsetY)
 end

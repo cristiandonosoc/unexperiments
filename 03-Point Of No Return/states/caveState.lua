@@ -12,13 +12,12 @@ local _miners = {}
 local _minerSpawn = 15
 _tiles = {}
 
-local _gameGrid
 
 function caveState:init()
   _map = ATL.Loader.load("cave.tmx") 
   _map:setDrawRange(0,0,_map.width*_map.tileWidth, _map.height*_map.tileHeight)
   
-  _gameGrid = Gamegrid(_map("cave"))
+  _gameGrid = Gamegrid(_map("cave"), _map.tileWidth, _map.tileHeight)
 
   -- We iterate over the tiles
   for x, y, tile in _map("cave"):iterate() do
@@ -34,6 +33,9 @@ function caveState:init()
       })
     end
   end
+
+  _player = Player()
+
 end
 
 function caveState:enter(oldState)
@@ -46,6 +48,22 @@ end
 function caveState:update(dt)
   _camera:move(_cameraTransform.x, _cameraTransform.y)
   for i, miner in pairs(_miners) do miner:update(dt) end
+
+  if _gameGrid.changed then
+    for x, y, cell in _gameGrid:iterate() do
+      if _gameGrid(x, y).visible then
+        _map("cave"):set(x, y, _gameGrid(x, y).tile)
+      else
+        _map("cave"):set(x, y, _tiles["empty"])
+      end
+    end
+    _gameGrid.changed = false
+    _map:forceRedraw()
+  end
+
+  _player:update(dt)
+  _gameGrid.collider:update(dt)
+
 end
 
 function addDwarf()
@@ -58,10 +76,11 @@ end
 
 function caveState:updateInput(dt)
   _cameraTransform.x, _cameraTransform.y = 0, 0 
-  if love.keyboard.isDown("w") then _cameraTransform.y = _cameraTransform.y - moveSpeed*dt end
-  if love.keyboard.isDown("a") then _cameraTransform.x = _cameraTransform.x - moveSpeed*dt end
-  if love.keyboard.isDown("s") then _cameraTransform.y = _cameraTransform.y + moveSpeed*dt end
-  if love.keyboard.isDown("d") then _cameraTransform.x = _cameraTransform.x + moveSpeed*dt end
+  if love.keyboard.isDown("up") then _cameraTransform.y = _cameraTransform.y - moveSpeed*dt end
+  if love.keyboard.isDown("left") then _cameraTransform.x = _cameraTransform.x - moveSpeed*dt end
+  if love.keyboard.isDown("down") then _cameraTransform.y = _cameraTransform.y + moveSpeed*dt end
+  if love.keyboard.isDown("right") then _cameraTransform.x = _cameraTransform.x + moveSpeed*dt end
+  _player:updateInput(dt)
 end
 
 
@@ -69,9 +88,11 @@ function caveState:draw()
   _camera:attach()
   _map:draw()
   for i, miner in pairs(_miners) do miner:draw() end
+  _player:draw()
   drawGrid()
   _camera:detach()
   printData()
+  _player:print()
 end
 
 function drawGrid()
@@ -90,8 +111,5 @@ function printData()
   end
   love.graphics.print("DWARVES: " .. #_miners, 10, 60)
 end
-
-
-
 
 return caveState

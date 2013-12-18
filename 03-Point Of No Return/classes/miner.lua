@@ -21,9 +21,8 @@ function Miner:update(dt)
     _timeCount = 0
     for x, y, tile in self.gameGrid:neighbours(self.grid_pos.x, self.grid_pos.y) do
       if not tile.empty then
-        tile.hp = tile.hp - _miningDamage
-        print(x, y, tile.hp)
-        if tile.hp <= 0 then
+        tile.properties.hp = tile.properties.hp - _miningDamage
+        if tile.properties.hp <= 0 then
           self.gameGrid:set(x, y, _tiles["empty"])
           _map("cave"):set(x, y, _tiles["empty"])
           _map:updateTiles()
